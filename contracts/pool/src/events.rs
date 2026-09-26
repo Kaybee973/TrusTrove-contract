@@ -1,4 +1,4 @@
-use soroban_sdk::{Address, BytesN, Env, Symbol};
+use soroban_sdk::{Address, BytesN, Env, String, Symbol};
 
 pub fn pool_initialized(
     env: &Env,
@@ -94,7 +94,7 @@ pub fn approval(env: &Env, owner: &Address, spender: &Address, amount: u128) {
 pub fn mint(env: &Env, to: &Address, amount: u128) {
     // For mint events, use zero address as minter since minting is restricted
     let zero_address_str = String::from_str(
-        &env,
+        env,
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     );
     let zero_address = Address::from_string(&zero_address_str);
@@ -105,7 +105,7 @@ pub fn mint(env: &Env, to: &Address, amount: u128) {
 pub fn burn(env: &Env, from: &Address, amount: u128) {
     // For burn events, use zero address as burner since burning is restricted
     let zero_address_str = String::from_str(
-        &env,
+        env,
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     );
     let zero_address = Address::from_string(&zero_address_str);
