@@ -346,12 +346,8 @@ impl PoolContract {
             .extend_ttl(&lp_init_key, TTL_THRESHOLD, TTL_EXTEND_TO);
 
         events::lp_deposited(&env, &lp, usdc_amount, shares_to_issue);
-<<<<<<< HEAD
-        Self::extend_instance_ttl(&env);
-=======
         // Emit SEP-41 mint event for shares issued
         events::mint(&env, &lp, shares_to_issue);
->>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
         shares_to_issue
     }
 
@@ -472,12 +468,8 @@ impl PoolContract {
             .extend_ttl(&yield_key, TTL_THRESHOLD, TTL_EXTEND_TO);
 
         events::lp_withdrawn(&env, &lp, usdc_to_return, shares);
-<<<<<<< HEAD
-        Self::extend_instance_ttl(&env);
-=======
         // Emit SEP-41 burn event for shares burned
         events::burn(&env, &lp, shares);
->>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
         usdc_to_return
     }
 
@@ -1162,6 +1154,7 @@ impl PoolContract {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /// Sets the protocol fee in basis points and the treasury address.
     ///
     /// Requires authorization from the contract admin. Updates both
@@ -1445,6 +1438,8 @@ impl PoolContract {
             .extend_ttl(&lp_shares_key, TTL_THRESHOLD, TTL_EXTEND_TO);
         remaining_shares
 =======
+=======
+>>>>>>> 518654bfeff556493b944ff610b1f991c6e1853a
     // SEP-41 Token Interface
     pub fn balance(env: Env, addr: Address) -> u128 {
         let lp_shares_key = DataKey::LPShares(addr);
@@ -1564,6 +1559,9 @@ impl PoolContract {
         // Actually, total supply doesn't change for transfer, only for mint/burn
 
         events::transfer(&env, from, to, amount);
+<<<<<<< HEAD
 >>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
+=======
+>>>>>>> 518654bfeff556493b944ff610b1f991c6e1853a
     }
 }
