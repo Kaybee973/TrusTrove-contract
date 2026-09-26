@@ -1,6 +1,6 @@
 # Limitations
 
-> **Updated:** 2026-07-29
+> **Updated:** 2026-09-26
 > **Applies to:** TrusTrove protocol on Stellar testnet
 
 This document captures known limitations, testnet-specific constraints,
@@ -78,6 +78,7 @@ relative costs based on code analysis.
 | `pool::fund_invoice` | 6 (`get_status`, `get_funding_asset`, `get_face_value`, `get_discount_bps`, `lock`, `mark_funded`) | 1 (pool → escrow) | — | — | **High** |
 | `pool::receive_repayment` | 0 | 0 | — | — | Low |
 | `pool::handle_default` | 1 (`escrow::handle_default`) | 1 (escrow → pool) | — | — | Medium |
+| `pool_factory::register_existing_pool` | 0 | 0 | 69,486 | 7,604 | Low |
 | `escrow::lock` | 0 | 1 (pool → escrow) | — | — | Medium |
 | `escrow::release_to_issuer` | 0 | 1 (escrow → issuer) | — | — | Medium |
 | `escrow::release_to_pool` | 0 | 1 (escrow → pool, partial allowed) | — | — | Medium |
