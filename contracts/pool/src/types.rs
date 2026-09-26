@@ -46,4 +46,5 @@ pub enum DataKey {
     LPInitialDeposit(Address),
     FundedInvoice(BytesN<32>),
     MaxUtilizationBps,
+    Allowance((Address, Address)),
 }
