@@ -487,7 +487,7 @@ impl PoolContract {
     /// # Panics
     /// * `InvalidAmount` if `amount` is zero.
     /// * `NoShares` if `from` has no shares.
-/// Transfers shares from one address to another.
+    /// Transfers shares from one address to another.
     ///
     /// # Arguments
     /// * `env` - The Soroban environment.
@@ -1567,13 +1567,17 @@ impl PoolContract {
 
         // Update from balance
         let new_from_shares = from_shares - amount;
-        env.storage().persistent().set(&from_shares_key, &new_from_shares);
+        env.storage()
+            .persistent()
+            .set(&from_shares_key, &new_from_shares);
 
         // Update to balance
         let to_shares_key = DataKey::LPShares(to.clone());
         let to_shares: u128 = env.storage().persistent().get(&to_shares_key).unwrap_or(0);
         let new_to_shares = to_shares + amount;
-        env.storage().persistent().set(&to_shares_key, &new_to_shares);
+        env.storage()
+            .persistent()
+            .set(&to_shares_key, &new_to_shares);
 
         // Update total supply (should remain constant for transfer)
         // Actually, total supply doesn't change for transfer, only for mint/burn
