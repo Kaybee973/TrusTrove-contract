@@ -658,7 +658,7 @@ fn test_transfer_succeeds() {
     te.pool.deposit(&te.lp, &10_000_000_000);
 
     let recipient = Address::generate(&te.env);
-    te.pool.transfer(&te.lp, &recipient, &5_000_000_000);
+    te.pool.transfer_shares(&te.lp, &recipient, &5_000_000_000);
 
     let lp_position = te.pool.get_lp_position(&te.lp);
     assert_eq!(lp_position.shares, 5_000_000_000);
@@ -673,7 +673,7 @@ fn test_transfer_same_address_no_op() {
     te.pool.deposit(&te.lp, &10_000_000_000);
 
     let before = te.pool.get_lp_position(&te.lp);
-    te.pool.transfer(&te.lp, &te.lp, &5_000_000_000);
+    te.pool.transfer_shares(&te.lp, &te.lp, &5_000_000_000);
     let after = te.pool.get_lp_position(&te.lp);
 
     assert_eq!(before.shares, after.shares);
@@ -686,7 +686,7 @@ fn test_transfer_zero_amount_panics() {
     te.pool.deposit(&te.lp, &10_000_000_000);
 
     let recipient = Address::generate(&te.env);
-    te.pool.transfer(&te.lp, &recipient, &0);
+    te.pool.transfer_shares(&te.lp, &recipient, &0);
 }
 
 #[test]
@@ -696,7 +696,7 @@ fn test_transfer_insufficient_balance_panics() {
     te.pool.deposit(&te.lp, &10_000_000_000);
 
     let recipient = Address::generate(&te.env);
-    te.pool.transfer(&te.lp, &recipient, &20_000_000_000);
+    te.pool.transfer_shares(&te.lp, &recipient, &20_000_000_000);
 }
 
 // ============== FUND INVOICE TESTS ==============
@@ -4099,7 +4099,7 @@ fn test_sep41_transfer_functionality() {
 
     // Transfer shares from lp to lp2
     let transfer_amount = 3_000_000_000;
-    let result = te.pool.transfer(&te.lp, &lp2, &transfer_amount);
+    let result = te.pool.transfer_shares(&te.lp, &lp2, &transfer_amount);
     assert!(result);
 
     // Check balances after transfer
@@ -4116,7 +4116,7 @@ fn test_sep41_transfer_zero_panics() {
     let te = setup();
     te.pool.deposit(&te.lp, &5_000_000_000);
     let lp2 = create_lp_with_balance(&te, 100_000_000_000_000i128);
-    te.pool.transfer(&te.lp, &lp2, &0);
+    te.pool.transfer_shares(&te.lp, &lp2, &0);
 }
 
 #[test]
@@ -4124,7 +4124,7 @@ fn test_sep41_transfer_zero_panics() {
 fn test_sep41_transfer_insufficient_shares_panics() {
     let te = setup();
     let lp2 = create_lp_with_balance(&te, 100_000_000_000_000i128);
-    te.pool.transfer(&te.lp, &lp2, &1_000_000_000);
+    te.pool.transfer_shares(&te.lp, &lp2, &1_000_000_000);
 }
 
 #[test]
@@ -4365,7 +4365,7 @@ fn test_sep41_transfer_functionality() {
 
     // Transfer shares from lp to lp2
     let transfer_amount = 3_000_000_000;
-    let result = te.pool.transfer(&te.lp, &lp2, &transfer_amount);
+    let result = te.pool.transfer_shares(&te.lp, &lp2, &transfer_amount);
     assert!(result);
 
     // Check balances after transfer
@@ -4382,7 +4382,7 @@ fn test_sep41_transfer_zero_panics() {
     let te = setup();
     te.pool.deposit(&te.lp, &5_000_000_000);
     let lp2 = create_lp_with_balance(&te, 100_000_000_000_000i128);
-    te.pool.transfer(&te.lp, &lp2, &0);
+    te.pool.transfer_shares(&te.lp, &lp2, &0);
 }
 
 #[test]
@@ -4390,7 +4390,7 @@ fn test_sep41_transfer_zero_panics() {
 fn test_sep41_transfer_insufficient_shares_panics() {
     let te = setup();
     let lp2 = create_lp_with_balance(&te, 100_000_000_000_000i128);
-    te.pool.transfer(&te.lp, &lp2, &1_000_000_000);
+    te.pool.transfer_shares(&te.lp, &lp2, &1_000_000_000);
 }
 
 #[test]
