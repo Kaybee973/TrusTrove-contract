@@ -14,11 +14,7 @@ fn test_initialize() {
 
     // Verify admin is stored
     env.as_contract(&factory_id, || {
-        let stored_admin: Address = env
-            .storage()
-            .instance()
-            .get(&DataKey::Admin)
-            .unwrap();
+        let stored_admin: Address = env.storage().instance().get(&DataKey::Admin).unwrap();
         assert_eq!(stored_admin, admin);
     });
 }
@@ -63,7 +59,11 @@ fn test_register_existing_pool() {
         let count: u32 = env.storage().instance().get(&DataKey::AssetCount).unwrap();
         assert_eq!(count, 1);
 
-        let indexed_asset: Address = env.storage().instance().get(&DataKey::AssetIndex(0)).unwrap();
+        let indexed_asset: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::AssetIndex(0))
+            .unwrap();
         assert_eq!(indexed_asset, asset);
     });
 }
