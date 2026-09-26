@@ -4179,7 +4179,9 @@ fn test_sep41_transfer_from() {
 
     // Transfer from LP1 to LP2 via spender
     let transfer_amount = 5_000_000_000;
-    let result = te.pool.transfer_from(&spender, &te.lp, &lp2, &transfer_amount);
+    let result = te
+        .pool
+        .transfer_from(&spender, &te.lp, &lp2, &transfer_amount);
     assert!(result);
 
     // Check balances after transfer
@@ -4188,7 +4190,10 @@ fn test_sep41_transfer_from() {
     assert_eq!(te.pool.balance(&spender), 0); // Spender should have 0 shares
 
     // Check allowance was reduced
-    assert_eq!(te.pool.allowance(&te.lp, &spender), approve_amount - transfer_amount);
+    assert_eq!(
+        te.pool.allowance(&te.lp, &spender),
+        approve_amount - transfer_amount
+    );
 }
 
 #[test]
@@ -4208,7 +4213,8 @@ fn test_sep41_transfer_from_insufficient_allowance_panics() {
     te.pool.approve(&te.lp, &spender, &2_000_000_000);
 
     // Try to transfer 5B shares (more than approved)
-    te.pool.transfer_from(&spender, &te.lp, &lp2, &5_000_000_000);
+    te.pool
+        .transfer_from(&spender, &te.lp, &lp2, &5_000_000_000);
 }
 
 #[test]
@@ -4439,7 +4445,9 @@ fn test_sep41_transfer_from() {
 
     // Transfer from LP1 to LP2 via spender
     let transfer_amount = 5_000_000_000;
-    let result = te.pool.transfer_from(&spender, &te.lp, &lp2, &transfer_amount);
+    let result = te
+        .pool
+        .transfer_from(&spender, &te.lp, &lp2, &transfer_amount);
     assert!(result);
 
     // Check balances after transfer
@@ -4448,7 +4456,10 @@ fn test_sep41_transfer_from() {
     assert_eq!(te.pool.balance(&spender), 0); // Spender should have 0 shares
 
     // Check allowance was reduced
-    assert_eq!(te.pool.allowance(&te.lp, &spender), approve_amount - transfer_amount);
+    assert_eq!(
+        te.pool.allowance(&te.lp, &spender),
+        approve_amount - transfer_amount
+    );
 }
 
 #[test]
@@ -4468,7 +4479,8 @@ fn test_sep41_transfer_from_insufficient_allowance_panics() {
     te.pool.approve(&te.lp, &spender, &2_000_000_000);
 
     // Try to transfer 5B shares (more than approved)
-    te.pool.transfer_from(&spender, &te.lp, &lp2, &5_000_000_000);
+    te.pool
+        .transfer_from(&spender, &te.lp, &lp2, &5_000_000_000);
 }
 
 #[test]

@@ -1153,8 +1153,6 @@ impl PoolContract {
         true
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     /// Sets the protocol fee in basis points and the treasury address.
     ///
     /// Requires authorization from the contract admin. Updates both
@@ -1437,9 +1435,8 @@ impl PoolContract {
             .persistent()
             .extend_ttl(&lp_shares_key, TTL_THRESHOLD, TTL_EXTEND_TO);
         remaining_shares
-=======
-=======
->>>>>>> 518654bfeff556493b944ff610b1f991c6e1853a
+    }
+
     // SEP-41 Token Interface
     pub fn balance(env: Env, addr: Address) -> u128 {
         let lp_shares_key = DataKey::LPShares(addr);
@@ -1467,7 +1464,13 @@ impl PoolContract {
         env.storage().instance().get(&allowance_key).unwrap_or(0)
     }
 
-    pub fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: u128) -> bool {
+    pub fn transfer_from(
+        env: Env,
+        spender: Address,
+        from: Address,
+        to: Address,
+        amount: u128,
+    ) -> bool {
         let spender_allowance = Self::allowance(env.clone(), from.clone(), spender.clone());
         if spender_allowance < amount {
             panic_with_error!(&env, PoolError::NotAuthorized);
@@ -1487,7 +1490,10 @@ impl PoolContract {
     }
 
     pub fn total_supply(env: Env) -> u128 {
-        env.storage().instance().get(&DataKey::TotalShares).unwrap_or(0)
+        env.storage()
+            .instance()
+            .get(&DataKey::TotalShares)
+            .unwrap_or(0)
     }
 
     pub fn mint(_env: Env, _to: Address, _amount: u128) -> bool {
@@ -1547,11 +1553,7 @@ impl PoolContract {
 
         // Update to balance
         let to_shares_key = DataKey::LPShares(to.clone());
-        let to_shares: u128 = env
-            .storage()
-            .persistent()
-            .get(&to_shares_key)
-            .unwrap_or(0);
+        let to_shares: u128 = env.storage().persistent().get(&to_shares_key).unwrap_or(0);
         let new_to_shares = to_shares + amount;
         persistent_set(&env, &to_shares_key, &new_to_shares);
 
@@ -1559,9 +1561,5 @@ impl PoolContract {
         // Actually, total supply doesn't change for transfer, only for mint/burn
 
         events::transfer(&env, from, to, amount);
-<<<<<<< HEAD
->>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
-=======
->>>>>>> 518654bfeff556493b944ff610b1f991c6e1853a
     }
 }

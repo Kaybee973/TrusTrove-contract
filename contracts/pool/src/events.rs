@@ -1,5 +1,5 @@
-use soroban_sdk::{Address, BytesN, Env, String, Symbol};
 use soroban_sdk::testutils::Address as _;
+use soroban_sdk::{Address, BytesN, Env, String, Symbol};
 
 pub fn pool_initialized(
     env: &Env,
@@ -95,10 +95,8 @@ pub fn approval(env: &Env, owner: &Address, spender: &Address, amount: u128) {
 pub fn mint(env: &Env, to: &Address, amount: u128) {
     // For mint events, use zero address as minter since minting is restricted
     let zero_address = Address::generate(&env);
-    env.events().publish(
-        (Symbol::new(env, "mint"), zero_address, to.clone()),
-        amount,
-    );
+    env.events()
+        .publish((Symbol::new(env, "mint"), zero_address, to.clone()), amount);
 }
 
 pub fn burn(env: &Env, from: &Address, amount: u128) {
