@@ -55,7 +55,6 @@ pub fn invoice_defaulted(env: &Env, invoice_id: &BytesN<32>, loss_amount: u128) 
     );
 }
 
-<<<<<<< HEAD
 pub fn max_utilization_updated(env: &Env, old_cap_bps: u32, new_cap_bps: u32) {
     env.events().publish(
         (Symbol::new(env, "max_utilization_updated"),),
@@ -75,7 +74,9 @@ pub fn protocol_fee_updated(env: &Env, old_fee_bps: u32, new_fee_bps: u32, treas
     env.events().publish(
         (Symbol::new(env, "protocol_fee_updated"),),
         (old_fee_bps, new_fee_bps, treasury.clone()),
-=======
+    );
+}
+
 // SEP-41 Events
 pub fn transfer(env: &Env, from: &Address, to: &Address, amount: u128) {
     env.events().publish(
@@ -106,6 +107,5 @@ pub fn burn(env: &Env, from: &Address, amount: u128) {
     env.events().publish(
         (Symbol::new(env, "burn"), from.clone(), zero_address),
         amount,
->>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
     );
 }
