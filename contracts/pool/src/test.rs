@@ -650,6 +650,55 @@ fn test_withdraw_more_than_owned_panics() {
     te.pool.withdraw(&te.lp, &20_000_000_000);
 }
 
+// ============== TRANSFER TESTS ==============
+
+#[test]
+fn test_transfer_succeeds() {
+    let te = setup();
+    te.pool.deposit(&te.lp, &10_000_000_000);
+
+    let recipient = Address::generate(&te.env);
+    te.pool.transfer(&te.lp, &recipient, &5_000_000_000);
+
+    let lp_position = te.pool.get_lp_position(&te.lp);
+    assert_eq!(lp_position.shares, 5_000_000_000);
+
+    let recipient_position = te.pool.get_lp_position(&recipient);
+    assert_eq!(recipient_position.shares, 5_000_000_000);
+}
+
+#[test]
+fn test_transfer_same_address_no_op() {
+    let te = setup();
+    te.pool.deposit(&te.lp, &10_000_000_000);
+
+    let before = te.pool.get_lp_position(&te.lp);
+    te.pool.transfer(&te.lp, &te.lp, &5_000_000_000);
+    let after = te.pool.get_lp_position(&te.lp);
+
+    assert_eq!(before.shares, after.shares);
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #4)")]
+fn test_transfer_zero_amount_panics() {
+    let te = setup();
+    te.pool.deposit(&te.lp, &10_000_000_000);
+
+    let recipient = Address::generate(&te.env);
+    te.pool.transfer(&te.lp, &recipient, &0);
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #23)")]
+fn test_transfer_insufficient_balance_panics() {
+    let te = setup();
+    te.pool.deposit(&te.lp, &10_000_000_000);
+
+    let recipient = Address::generate(&te.env);
+    te.pool.transfer(&te.lp, &recipient, &20_000_000_000);
+}
+
 // ============== FUND INVOICE TESTS ==============
 
 #[test]

@@ -471,6 +471,80 @@ impl PoolContract {
         usdc_to_return
     }
 
+    /// Transfers LP shares from one address to another.
+    ///
+    /// # Arguments
+    /// * `env` - The Soroban environment.
+    /// * `from` - The address transferring shares (must authorize).
+    /// * `to` - The address receiving shares.
+    /// * `amount` - The number of shares to transfer.
+    ///
+    /// # Auth
+    /// Requires authorization from `from` (via `from.require_auth()`).
+    ///
+    /// # Panics
+    /// * `InvalidAmount` if `amount` is zero.
+    /// * `NoShares` if `from` has no shares.
+    /// * `InsufficientBalance` if `from` does not own enough shares.
+    ///
+    /// # Returns
+    /// * `()` - No value is returned.
+    ///
+    /// # Example
+    /// ```ignore
+    /// client.transfer(&from, &to, 100);
+    /// ```
+    pub fn transfer(env: Env, from: Address, to: Address, amount: i128) {
+        Self::require_initialized(&env);
+        from.require_auth();
+        if amount <= 0 {
+            panic_with_error!(&env, PoolError::InvalidAmount);
+        }
+
+        let amount_u128 = amount as u128;
+
+        let from_shares_key = DataKey::LPShares(from.clone());
+        let from_shares: u128 = env
+            .storage()
+            .persistent()
+            .get(&from_shares_key)
+            .unwrap_or_else(|| panic_with_error!(&env, PoolError::NoShares));
+
+        if from_shares < amount_u128 {
+            panic_with_error!(&env, PoolError::InsufficientBalance);
+        }
+
+        // No-op if transferring to self
+        if from == to {
+            return;
+        }
+
+        // Decrement from sender
+        let remaining_shares = from_shares - amount_u128;
+        if remaining_shares > 0 {
+            env.storage()
+                .persistent()
+                .set(&from_shares_key, &remaining_shares);
+            env.storage()
+                .persistent()
+                .extend_ttl(&from_shares_key, TTL_THRESHOLD, TTL_EXTEND_TO);
+        } else {
+            env.storage().persistent().remove(&from_shares_key);
+        }
+
+        // Increment to recipient
+        let to_shares_key = DataKey::LPShares(to.clone());
+        let to_shares: u128 = env.storage().persistent().get(&to_shares_key).unwrap_or(0);
+        env.storage()
+            .persistent()
+            .set(&to_shares_key, &(to_shares + amount_u128));
+        env.storage()
+            .persistent()
+            .extend_ttl(&to_shares_key, TTL_THRESHOLD, TTL_EXTEND_TO);
+
+        Self::extend_instance_ttl(&env);
+    }
+
     /// Funds a listed invoice by moving USDC through escrow and invoice contracts.
     ///
     /// # Arguments

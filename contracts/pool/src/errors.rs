@@ -24,4 +24,6 @@ pub enum PoolError {
     EscrowDefaultNotReleased = 21,
     /// Protocol fee basis points exceed `MAX_PROTOCOL_FEE_BPS` (2000 bps = 20%).
     FeeTooHigh = 22,
+    /// Transfer amount exceeds sender's share balance.
+    InsufficientBalance = 23,
 }
