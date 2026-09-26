@@ -83,6 +83,7 @@ pub enum DataKey {
     LPInitialDeposit(Address),
     FundedInvoice(BytesN<32>),
     MaxUtilizationBps,
+<<<<<<< HEAD
     // RegistryContract intentionally last to avoid changing enum discriminants
     // for already-deployed contract storage keys. New variants must keep
     // being appended after it, in the same spirit, rather than inserted
@@ -92,4 +93,7 @@ pub enum DataKey {
     ProtocolFeeBps,
     /// Stored treasury destination address (defaults to admin).
     TreasuryAddress,
+=======
+    Allowance((Address, Address)),
+>>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
 }

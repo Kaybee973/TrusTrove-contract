@@ -346,7 +346,12 @@ impl PoolContract {
             .extend_ttl(&lp_init_key, TTL_THRESHOLD, TTL_EXTEND_TO);
 
         events::lp_deposited(&env, &lp, usdc_amount, shares_to_issue);
+<<<<<<< HEAD
         Self::extend_instance_ttl(&env);
+=======
+        // Emit SEP-41 mint event for shares issued
+        events::mint(&env, &lp, shares_to_issue);
+>>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
         shares_to_issue
     }
 
@@ -467,7 +472,12 @@ impl PoolContract {
             .extend_ttl(&yield_key, TTL_THRESHOLD, TTL_EXTEND_TO);
 
         events::lp_withdrawn(&env, &lp, usdc_to_return, shares);
+<<<<<<< HEAD
         Self::extend_instance_ttl(&env);
+=======
+        // Emit SEP-41 burn event for shares burned
+        events::burn(&env, &lp, shares);
+>>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
         usdc_to_return
     }
 
@@ -1151,6 +1161,7 @@ impl PoolContract {
         true
     }
 
+<<<<<<< HEAD
     /// Sets the protocol fee in basis points and the treasury address.
     ///
     /// Requires authorization from the contract admin. Updates both
@@ -1433,5 +1444,126 @@ impl PoolContract {
             .persistent()
             .extend_ttl(&lp_shares_key, TTL_THRESHOLD, TTL_EXTEND_TO);
         remaining_shares
+=======
+    // SEP-41 Token Interface
+    pub fn balance(env: Env, addr: Address) -> u128 {
+        let lp_shares_key = DataKey::LPShares(addr);
+        env.storage().persistent().get(&lp_shares_key).unwrap_or(0)
+    }
+
+    pub fn transfer(env: Env, from: Address, to: Address, amount: u128) -> bool {
+        from.require_auth();
+        Self::_transfer(env, &from, &to, amount);
+        true
+    }
+
+    pub fn approve(env: Env, owner: Address, spender: Address, amount: u128) -> bool {
+        owner.require_auth();
+
+        let allowance_key = DataKey::Allowance((owner.clone(), spender.clone()));
+        env.storage().instance().set(&allowance_key, &amount);
+
+        events::approval(&env, &owner, &spender, amount);
+        true
+    }
+
+    pub fn allowance(env: Env, owner: Address, spender: Address) -> u128 {
+        let allowance_key = DataKey::Allowance((owner.clone(), spender.clone()));
+        env.storage().instance().get(&allowance_key).unwrap_or(0)
+    }
+
+    pub fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: u128) -> bool {
+        let spender_allowance = Self::allowance(env.clone(), from.clone(), spender.clone());
+        if spender_allowance < amount {
+            panic_with_error!(&env, PoolError::NotAuthorized);
+        }
+
+        // Reduce allowance
+        if spender_allowance == u128::MAX {
+            // Max allowance, no need to reduce
+        } else {
+            let new_allowance = spender_allowance - amount;
+            let allowance_key = DataKey::Allowance((from.clone(), spender.clone()));
+            env.storage().instance().set(&allowance_key, &new_allowance);
+        }
+
+        Self::_transfer(env, &from, &to, amount);
+        true
+    }
+
+    pub fn total_supply(env: Env) -> u128 {
+        env.storage().instance().get(&DataKey::TotalShares).unwrap_or(0)
+    }
+
+    pub fn mint(_env: Env, _to: Address, _amount: u128) -> bool {
+        // Only allow minting through deposit function for now
+        // In a more flexible implementation, this might have access controls
+        false
+    }
+
+    pub fn burn(_env: Env, _from: Address, _amount: u128) -> bool {
+        // Only allow burning through withdraw function for now
+        false
+    }
+
+    pub fn decimals(_env: Env) -> u32 {
+        // LP shares are typically treated as having 7 decimals to match USDC
+        // but since we're dealing with raw shares, we return 0
+        // Alternatively, could return 7 if we want to match USDC precision
+        0
+    }
+
+    pub fn name(_env: Env) -> BytesN<32> {
+        // Using a fixed name for the pool token
+        let mut name_bytes = [0u8; 32];
+        let name_str = "TrusTrove Pool Share";
+        name_bytes[..name_str.len()].copy_from_slice(name_str.as_bytes());
+        BytesN::from_array(&_env, &name_bytes)
+    }
+
+    pub fn symbol(_env: Env) -> BytesN<32> {
+        // Using a fixed symbol for the pool token
+        let mut symbol_bytes = [0u8; 32];
+        let symbol_str = "TPS";
+        symbol_bytes[..symbol_str.len()].copy_from_slice(symbol_str.as_bytes());
+        BytesN::from_array(&_env, &symbol_bytes)
+    }
+
+    // Internal transfer function
+    fn _transfer(env: Env, from: &Address, to: &Address, amount: u128) {
+        if amount == 0 {
+            panic_with_error!(&env, PoolError::InvalidAmount);
+        }
+
+        let from_shares_key = DataKey::LPShares(from.clone());
+        let from_shares: u128 = env
+            .storage()
+            .persistent()
+            .get(&from_shares_key)
+            .unwrap_or_else(|| panic_with_error!(&env, PoolError::NoShares));
+
+        if from_shares < amount {
+            panic_with_error!(&env, PoolError::InsufficientShares);
+        }
+
+        // Update from balance
+        let new_from_shares = from_shares - amount;
+        persistent_set(&env, &from_shares_key, &new_from_shares);
+
+        // Update to balance
+        let to_shares_key = DataKey::LPShares(to.clone());
+        let to_shares: u128 = env
+            .storage()
+            .persistent()
+            .get(&to_shares_key)
+            .unwrap_or(0);
+        let new_to_shares = to_shares + amount;
+        persistent_set(&env, &to_shares_key, &new_to_shares);
+
+        // Update total supply (should remain constant for transfer)
+        // Actually, total supply doesn't change for transfer, only for mint/burn
+
+        events::transfer(&env, from, to, amount);
+>>>>>>> 9c15837 (Implement SEP-41 token standard compliance for TrusTrove liquidity pool contract)
     }
 }
