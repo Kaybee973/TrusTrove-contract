@@ -24,7 +24,9 @@ fn test_list_assets_single() {
     let asset = Address::generate(&env);
     env.as_contract(&factory_id, || {
         env.storage().instance().set(&DataKey::AssetCount, &1u32);
-        env.storage().instance().set(&DataKey::AssetIndex(0), &asset);
+        env.storage()
+            .instance()
+            .set(&DataKey::AssetIndex(0), &asset);
     });
 
     let assets = factory_client.list_assets();
@@ -45,9 +47,15 @@ fn test_list_assets_multiple() {
 
     env.as_contract(&factory_id, || {
         env.storage().instance().set(&DataKey::AssetCount, &3u32);
-        env.storage().instance().set(&DataKey::AssetIndex(0), &asset1);
-        env.storage().instance().set(&DataKey::AssetIndex(1), &asset2);
-        env.storage().instance().set(&DataKey::AssetIndex(2), &asset3);
+        env.storage()
+            .instance()
+            .set(&DataKey::AssetIndex(0), &asset1);
+        env.storage()
+            .instance()
+            .set(&DataKey::AssetIndex(1), &asset2);
+        env.storage()
+            .instance()
+            .set(&DataKey::AssetIndex(2), &asset3);
     });
 
     let assets = factory_client.list_assets();
