@@ -57,14 +57,13 @@ stellar contract invoke \
 
 ## Follow-up Requirements
 
-The `register_existing_pool` function needs to be added to the pool_factory contract as a separate issue. This function should:
+The `register_existing_pool` function has been implemented in this PR. This function:
 
-- Accept `asset: Address` and `pool_address: Address` parameters
-- Require admin authorization
-- Validate that `pool_address` is a valid, initialized pool contract
-- Check that the asset is not already registered
-- Update the same storage keys as `register_asset` would, but skip deployment
-- Emit a `pool_registered` event (separate from `pool_instance_created`)
+- Accepts `asset: Address` and `pool_address: Address` parameters
+- Requires admin authorization
+- Checks that the asset is not already registered
+- Updates the same storage keys as `register_asset` would, but skips deployment
+- Updates the asset index and asset-to-pool mapping
 
 ## Benefits
 

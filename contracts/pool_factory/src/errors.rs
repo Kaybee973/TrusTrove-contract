@@ -5,6 +5,5 @@ use soroban_sdk::contracterror;
 pub enum PoolFactoryError {
     AlreadyInitialized = 1,
     NotInitialized = 2,
-    InvalidAmount = 3,
-    AssetAlreadyRegistered = 4,
+    AssetAlreadyRegistered = 3,
 }

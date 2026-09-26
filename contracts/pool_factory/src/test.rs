@@ -3,6 +3,90 @@ use soroban_sdk::{testutils::Address as _, Address, Env};
 use crate::{DataKey, PoolFactoryContract, PoolFactoryContractClient};
 
 #[test]
+fn test_initialize() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let factory_id = env.register_contract(None, PoolFactoryContract);
+    let factory_client = PoolFactoryContractClient::new(&env, &factory_id);
+
+    let admin = Address::generate(&env);
+    factory_client.initialize(&admin);
+
+    // Verify admin is stored
+    env.as_contract(&factory_id, || {
+        let stored_admin: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::Admin)
+            .unwrap();
+        assert_eq!(stored_admin, admin);
+    });
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #1)")]
+fn test_initialize_twice_panics() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let factory_id = env.register_contract(None, PoolFactoryContract);
+    let factory_client = PoolFactoryContractClient::new(&env, &factory_id);
+
+    let admin = Address::generate(&env);
+    factory_client.initialize(&admin);
+    factory_client.initialize(&admin);
+}
+
+#[test]
+fn test_register_existing_pool() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let factory_id = env.register_contract(None, PoolFactoryContract);
+    let factory_client = PoolFactoryContractClient::new(&env, &factory_id);
+
+    let admin = Address::generate(&env);
+    factory_client.initialize(&admin);
+
+    let asset = Address::generate(&env);
+    let pool_address = Address::generate(&env);
+
+    factory_client.register_existing_pool(&asset, &pool_address);
+
+    // Verify registration
+    env.as_contract(&factory_id, || {
+        let stored_pool: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::AssetToPool(asset.clone()))
+            .unwrap();
+        assert_eq!(stored_pool, pool_address);
+
+        let count: u32 = env.storage().instance().get(&DataKey::AssetCount).unwrap();
+        assert_eq!(count, 1);
+
+        let indexed_asset: Address = env.storage().instance().get(&DataKey::AssetIndex(0)).unwrap();
+        assert_eq!(indexed_asset, asset);
+    });
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #3)")]
+fn test_register_existing_pool_duplicate_panics() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let factory_id = env.register_contract(None, PoolFactoryContract);
+    let factory_client = PoolFactoryContractClient::new(&env, &factory_id);
+
+    let admin = Address::generate(&env);
+    factory_client.initialize(&admin);
+
+    let asset = Address::generate(&env);
+    let pool_address = Address::generate(&env);
+
+    factory_client.register_existing_pool(&asset, &pool_address);
+    factory_client.register_existing_pool(&asset, &pool_address);
+}
+
+#[test]
 fn test_list_assets_empty() {
     let env = Env::default();
     let factory_id = env.register_contract(None, PoolFactoryContract);
@@ -10,6 +94,38 @@ fn test_list_assets_empty() {
 
     let assets = factory_client.list_assets();
     assert_eq!(assets.len(), 0);
+}
+
+#[test]
+fn test_gas_benchmark_register_existing_pool() {
+    extern crate std;
+    let env = Env::default();
+    env.mock_all_auths();
+    let factory_id = env.register_contract(None, PoolFactoryContract);
+    let factory_client = PoolFactoryContractClient::new(&env, &factory_id);
+
+    let admin = Address::generate(&env);
+    factory_client.initialize(&admin);
+
+    let asset = Address::generate(&env);
+    let pool_address = Address::generate(&env);
+
+    // Measure register_existing_pool resource cost
+    env.budget().reset_default();
+    let cpu_before = env.budget().cpu_instruction_cost();
+    let mem_before = env.budget().memory_bytes_cost();
+
+    factory_client.register_existing_pool(&asset, &pool_address);
+
+    let cpu_after = env.budget().cpu_instruction_cost();
+    let mem_after = env.budget().memory_bytes_cost();
+
+    let cpu_delta = cpu_after - cpu_before;
+    let mem_delta = mem_after - mem_before;
+
+    // Log for manual inspection
+    std::eprintln!("register_existing_pool CPU instructions: {}", cpu_delta);
+    std::eprintln!("register_existing_pool Memory bytes: {}", mem_delta);
 }
 
 #[test]
