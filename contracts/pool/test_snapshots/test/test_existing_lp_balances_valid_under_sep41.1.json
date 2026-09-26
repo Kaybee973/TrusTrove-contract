@@ -167,7 +167,6 @@
         }
       ]
     ],
-    [],
     [
       [
         "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4",
@@ -183,7 +182,7 @@
                 {
                   "u128": {
                     "hi": 0,
-                    "lo": 10000000000
+                    "lo": 1000000000
                   }
                 }
               ]
@@ -193,6 +192,8 @@
         }
       ]
     ],
+    [],
+    [],
     [
       [
         "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXI7N",
@@ -208,7 +209,7 @@
                 {
                   "u128": {
                     "hi": 0,
-                    "lo": 20000000000
+                    "lo": 2000000000
                   }
                 }
               ]
@@ -218,6 +219,7 @@
         }
       ]
     ],
+    [],
     []
   ],
   "ledger": {
@@ -678,7 +680,7 @@
                 "val": {
                   "i128": {
                     "hi": 0,
-                    "lo": 99990000000000
+                    "lo": 99999000000000
                   }
                 }
               }
@@ -720,7 +722,7 @@
                 "val": {
                   "i128": {
                     "hi": 0,
-                    "lo": 30000000000
+                    "lo": 3000000000
                   }
                 }
               }
@@ -762,7 +764,7 @@
                 "val": {
                   "i128": {
                     "hi": 0,
-                    "lo": 99980000000000
+                    "lo": 99998000000000
                   }
                 }
               }
@@ -1312,7 +1314,7 @@
                 "val": {
                   "u128": {
                     "hi": 0,
-                    "lo": 10000000000
+                    "lo": 1000000000
                   }
                 }
               }
@@ -1360,7 +1362,7 @@
                 "val": {
                   "u128": {
                     "hi": 0,
-                    "lo": 20000000000
+                    "lo": 2000000000
                   }
                 }
               }
@@ -1408,7 +1410,7 @@
                 "val": {
                   "u128": {
                     "hi": 0,
-                    "lo": 10000000000
+                    "lo": 1000000000
                   }
                 }
               }
@@ -1456,7 +1458,7 @@
                 "val": {
                   "u128": {
                     "hi": 0,
-                    "lo": 20000000000
+                    "lo": 2000000000
                   }
                 }
               }
@@ -1560,7 +1562,7 @@
                         "val": {
                           "u128": {
                             "hi": 0,
-                            "lo": 30000000000
+                            "lo": 3000000000
                           }
                         }
                       },
@@ -1590,7 +1592,7 @@
                         "val": {
                           "u128": {
                             "hi": 0,
-                            "lo": 30000000000
+                            "lo": 3000000000
                           }
                         }
                       },
@@ -2200,7 +2202,7 @@
                 {
                   "u128": {
                     "hi": 0,
-                    "lo": 10000000000
+                    "lo": 1000000000
                   }
                 }
               ]
@@ -2239,7 +2241,7 @@
                 {
                   "i128": {
                     "hi": 0,
-                    "lo": 10000000000
+                    "lo": 1000000000
                   }
                 }
               ]
@@ -2290,13 +2292,13 @@
                 {
                   "u128": {
                     "hi": 0,
-                    "lo": 10000000000
+                    "lo": 1000000000
                   }
                 },
                 {
                   "u128": {
                     "hi": 0,
-                    "lo": 10000000000
+                    "lo": 1000000000
                   }
                 }
               ]
@@ -2327,7 +2329,7 @@
             "data": {
               "u128": {
                 "hi": 0,
-                "lo": 10000000000
+                "lo": 1000000000
               }
             }
           }
@@ -2353,7 +2355,59 @@
             "data": {
               "u128": {
                 "hi": 0,
-                "lo": 10000000000
+                "lo": 1000000000
+              }
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": null,
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "000000000000000000000000000000000000000000000000000000000000000a"
+              },
+              {
+                "symbol": "balance"
+              }
+            ],
+            "data": {
+              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "000000000000000000000000000000000000000000000000000000000000000a",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "balance"
+              }
+            ],
+            "data": {
+              "u128": {
+                "hi": 0,
+                "lo": 1000000000
               }
             }
           }
@@ -2387,7 +2441,7 @@
                 {
                   "u128": {
                     "hi": 0,
-                    "lo": 20000000000
+                    "lo": 2000000000
                   }
                 }
               ]
@@ -2426,7 +2480,7 @@
                 {
                   "i128": {
                     "hi": 0,
-                    "lo": 20000000000
+                    "lo": 2000000000
                   }
                 }
               ]
@@ -2477,13 +2531,13 @@
                 {
                   "u128": {
                     "hi": 0,
-                    "lo": 20000000000
+                    "lo": 2000000000
                   }
                 },
                 {
                   "u128": {
                     "hi": 0,
-                    "lo": 20000000000
+                    "lo": 2000000000
                   }
                 }
               ]
@@ -2514,7 +2568,7 @@
             "data": {
               "u128": {
                 "hi": 0,
-                "lo": 20000000000
+                "lo": 2000000000
               }
             }
           }
@@ -2540,7 +2594,7 @@
             "data": {
               "u128": {
                 "hi": 0,
-                "lo": 20000000000
+                "lo": 2000000000
               }
             }
           }
@@ -2563,10 +2617,12 @@
                 "bytes": "000000000000000000000000000000000000000000000000000000000000000a"
               },
               {
-                "symbol": "get_stats"
+                "symbol": "balance"
               }
             ],
-            "data": "void"
+            "data": {
+              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXI7N"
+            }
           }
         }
       },
@@ -2584,91 +2640,66 @@
                 "symbol": "fn_return"
               },
               {
-                "symbol": "get_stats"
+                "symbol": "balance"
               }
             ],
             "data": {
-              "map": [
-                {
-                  "key": {
-                    "symbol": "active_invoice_count"
-                  },
-                  "val": {
-                    "u32": 0
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "available_liquidity"
-                  },
-                  "val": {
-                    "u128": {
-                      "hi": 0,
-                      "lo": 30000000000
-                    }
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "max_utilization_bps"
-                  },
-                  "val": {
-                    "u32": 10000
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "total_deposits"
-                  },
-                  "val": {
-                    "u128": {
-                      "hi": 0,
-                      "lo": 30000000000
-                    }
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "total_funded"
-                  },
-                  "val": {
-                    "u128": {
-                      "hi": 0,
-                      "lo": 0
-                    }
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "total_shares"
-                  },
-                  "val": {
-                    "u128": {
-                      "hi": 0,
-                      "lo": 30000000000
-                    }
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "total_yield_distributed"
-                  },
-                  "val": {
-                    "u128": {
-                      "hi": 0,
-                      "lo": 0
-                    }
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "utilization_rate_bps"
-                  },
-                  "val": {
-                    "u32": 0
-                  }
-                }
-              ]
+              "u128": {
+                "hi": 0,
+                "lo": 2000000000
+              }
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": null,
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "000000000000000000000000000000000000000000000000000000000000000a"
+              },
+              {
+                "symbol": "balance"
+              }
+            ],
+            "data": {
+              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "000000000000000000000000000000000000000000000000000000000000000a",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "balance"
+              }
+            ],
+            "data": {
+              "u128": {
+                "hi": 0,
+                "lo": 1000000000
+              }
             }
           }
         }
