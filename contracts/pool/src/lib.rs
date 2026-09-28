@@ -18,6 +18,18 @@ pub struct PoolContract;
 
 #[contractimpl]
 impl PoolContract {
+
+    /// Internal function to burn shares from an LP and update total shares.
+    fn burn(env: &Env, from: &Address, amount: u128) {
+        let total_shares: u128 = env.storage().instance().get(&DataKey::TotalShares).unwrap();
+        env.storage()
+            .instance()
+            .set(&DataKey::TotalShares, &(total_shares - amount));
+
+        let lp_shares_key = DataKey::LPShares(from.clone());
+        let lp_shares: u128 = env.storage().persistent().get(&lp_shares_key).unwrap_or(0);
+        persistent_set(&env, &lp_shares_key, &(lp_shares - amount));
+    }
     pub fn initialize(
         env: Env,
         admin: Address,
@@ -90,6 +102,7 @@ impl PoolContract {
         env.storage().instance().get(&DataKey::UsdcAsset).unwrap()
     }
 
+    
     pub fn deposit(env: Env, lp: Address, usdc_amount: u128) -> u128 {
         // Deposits USDC from an LP and issues pool shares.
         //
@@ -221,14 +234,10 @@ impl PoolContract {
             &(usdc_to_return as i128),
         );
 
-        env.storage()
-            .instance()
-            .set(&DataKey::TotalShares, &(total_shares - shares));
+        Self::burn(&env, &lp, shares);
         env.storage()
             .instance()
             .set(&DataKey::TotalDeposits, &(total_deposits - usdc_to_return));
-
-        persistent_set(&env, &lp_shares_key, &(lp_shares - shares));
 
         let init_dep_key = DataKey::LPInitialDeposit(lp.clone());
         let init_dep: u128 = env.storage().persistent().get(&init_dep_key).unwrap_or(0);
